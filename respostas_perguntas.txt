@@ -1,0 +1,49 @@
+Qual o objetivo do comando cache em Spark?
+ 
+Cache é uma técnica de otimização para cálculos no Spark (iterativos e interativos). Ele ajuda a guardar resultados parciais intermediários para que possam ser reutilizados nos estágios subsequentes. Esses resultados provisórios como RDDs (Resilient Distributed Datasets) são, portanto, mantidos na memória padrão.
+
+Os RDDs podem ser armazenados em cache usando o comando de cache.
+
+ 
+
+O mesmo código implementado em Spark é normalmente mais rápido que a implementação equivalente em
+
+MapReduce. Por quê?
+
+O compartilhamento de dados é lento no MapReduce devido à replicação, serialização e IO de disco. A maioria dos aplicativos do Hadoop gasta mais de 90% do tempo fazendo operações de leitura / gravação no HDFS.
+
+Sendo assim, a ideia chave do Spark é RDDs (Resilient Distributed Datasets); ele suporta processamento in-memory. Isso significa que armazena o estado da memória como um objeto entre as tarefas e o objeto é compartilhável entre essas tarefas. O compartilhamento de dados na memória é de 10 a 100 vezes mais rápido do que na rede e no disco.
+ 
+
+
+Qual é a função do SparkContext ?
+
+Um SparkContext é um client do ambiente de execução do Spark e atua como o mestre do aplicativo Spark. O SparkContext configura serviços internos e estabelece uma conexão com um ambiente de execução do Spark. É possível criar RDDs, acumuladores e variáveis ​​de difusão, acessar serviços do Spark e executar trabalhos (até que o SparkContext pare) após a criação do SparkContext.
+
+A primeira etapa de qualquer aplicativo do driver Spark é criar um SparkContext. O SparkContext permite que o aplicativo do driver Spark acesse o cluster por meio de um gerenciador de recursos. O gerenciador de recursos pode ser o YARN ou o Gerenciador de Cluster do Spark.
+
+ 
+
+Explique com suas palavras o que é Resilient Distributed Datasets (RDD).
+
+Os Resilient Distributed Datasets (RDD) são uma estrutura de dados fundamental do Spark. É uma coleção distribuída imutável de objetos. Cada conjunto de dados no RDD é dividido em partições lógicas, que podem ser calculadas em diferentes nós do cluster. Os RDDs podem conter qualquer tipo de objetos Python, Java ou Scala, incluindo classes definidas pelo usuário.
+
+Um RDD é uma coleção de registros particionados somente para leitura. Os RDDs podem ser criados por meio de operações em dados sobre armazenamento estável ou outros RDDs.
+
+ 
+
+GroupByKey é menos eficiente que reduceByKey em grandes dataset. Por quê?
+
+Ao chamar groupByKey, todos os pares de chave-valores são embaralhados. Isso resulta em muitos dados desnecessários para serem transferidos pela rede.
+
+Pelo contrário, no reduceByKey, o Spark combina a saída com uma chave comum em cada partição antes de embaralhar os dados, ou seja, os dados são combinados em cada partição; há apenas uma saída para uma chave em cada partição para enviar pela rede.
+
+ 
+
+Explique o que o código Scala abaixo faz.
+
+Na primeira linha, declara uma variável que referencia um arquivo de texto que está no HDFS, usando um SparkContext (sc).
+
+Após, separa a string que está no arquivo em um array de strings, então atribui o valor 1 para cada palavra e, na penúltima linha, realiza o reduce, de modo que o retorno é um count das palavras que estão no arquivo. No formato (palavra, número de ocorrências).
+
+Por fim, salva o resultado do count no HDFS.
